@@ -105,14 +105,14 @@ struct kautil_json_nlohmann_extern{
 };
 
 
-
+kautil_json_nlohmann_extern * kautil_json_nlohmann_extern_auto();
 kautil_json_nlohmann_extern * kautil_json_nlohmann_extern_initialize(
         void *(*dlopen)(const char * ,int flags)
         ,void *(*dlsym)(void * ,const char *)
         ,int (*dlclose)(void*)
         ,int flags
         );
-void kautil_json_nlohmann_extern_finalize(kautil_json_nlohmann_extern *);
+void kautil_json_nlohmann_extern_free(kautil_json_nlohmann_extern *);
 
 
 

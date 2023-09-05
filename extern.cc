@@ -1,5 +1,6 @@
 
 #include "nlohmann.h"
+
 struct kautil_json_nlohmann_prv{
     void * dl;
     void (*destruct)(kautil_json_nlohmann_extern*);
@@ -21,7 +22,8 @@ kautil_json_nlohmann_extern * kautil_json_nlohmann_extern_initialize(
     return m;
 }
 
-void kautil_json_nlohmann_extern_finalize(kautil_json_nlohmann_extern *m){
+
+void kautil_json_nlohmann_extern_free(kautil_json_nlohmann_extern *m){
     // order has mean
     auto dlclose = m->prv->dlclose;
     auto prv = m->prv;
@@ -31,6 +33,24 @@ void kautil_json_nlohmann_extern_finalize(kautil_json_nlohmann_extern *m){
     delete prv;
     destruct(m);
     dlclose(dl);
+}
+
+
+
+
+
+
+#include "sharedlib/sharedlib.h"
+struct kAutoRelease{
+    kautil_json_nlohmann_extern * instance=0; 
+    kAutoRelease(){ instance=kautil_json_nlohmann_extern_initialize(kautil_dlopen,kautil_dlsym,kautil_dlclose,rtld_nodelete|rtld_lazy); }
+    ~kAutoRelease(){ kautil_json_nlohmann_extern_free(instance); }
+    
+};
+
+kautil_json_nlohmann_extern * kautil_json_nlohmann_extern_auto(){ 
+    static kAutoRelease kRes;
+    return kRes.instance; 
 }
 
 

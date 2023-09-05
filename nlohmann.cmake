@@ -14,7 +14,11 @@ macro(git_clone url)
 endmacro()
 
 git_clone(https://raw.githubusercontent.com/kautils/CMakeLibrarytemplate/v0.0.1/CMakeLibrarytemplate.cmake)
+git_clone(https://raw.githubusercontent.com/kautils/CMakeFetchKautilModule/v0.0.1/CMakeFetchKautilModule.cmake)
 
+
+CMakeFetchKautilModule(sharedlib GIT https://github.com/kautils/sharedlib.git REMOTE origin TAG v0.0.1)
+find_package(KautilSharedlib.0.0.1.static REQUIRED)
 
 
 set(__t kautil_json_nlohmann_definition_${PROJECT_VERSION})
@@ -34,6 +38,7 @@ set(${module_name}_common_pref
     MODULE_NAME ${module_name}
     INCLUDES $<BUILD_INTERFACE:${__nlohamnn_dir}> $<BUILD_INTERFACE:${__include_dir}>  $<INSTALL_INTERFACE:include> 
     SOURCES ${srcs}
+    LINK_LIBS kautil::sharedlib::0.0.1::static
     EXPORT_NAME_PREFIX ${PROJECT_NAME}
     EXPORT_VERSION ${PROJECT_VERSION}
     EXPORT_VERSION_COMPATIBILITY AnyNewerVersion
@@ -55,3 +60,9 @@ add_executable(${__t})
 target_sources(${__t} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/unit_test.cc)
 target_link_libraries(${__t} PRIVATE ${${module_name}_static})
 target_compile_definitions(${__t} PRIVATE ${${module_name}_static_tmain_ppcs})
+
+set(__t ${${module_name}_static_tmain}_auto)
+add_executable(${__t})
+target_sources(${__t} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/unit_test.cc)
+target_link_libraries(${__t} PRIVATE ${${module_name}_static})
+target_compile_definitions(${__t} PRIVATE ${${module_name}_static_tmain_ppcs}_AUTO)
