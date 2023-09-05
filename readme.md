@@ -1,5 +1,5 @@
 ### kautil_json_nlohmann
-* prepared this to shorten copilation time
+* wrapper of nlohmann json. prepared this to shorten copilation time
 
 ### note 
 * kautil_json_nlohmann_extern_initialize : use when want to make detailed settings for dl options
