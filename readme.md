@@ -33,7 +33,7 @@ int main(){
         printf("%.*s",size,dump);
         delete [] dump;
     }
-    json->finalize(j);
+    json->free(j);
     return 0;
 }
 

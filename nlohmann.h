@@ -28,7 +28,7 @@ struct kautil_json_nlohmann_prv;
 struct kautil_json_nlohmann_extern{
 
     void *(*initialize)();
-    void (*finalize)(void *hdl);
+    void (*free)(void *hdl);
     void (*clear)(void *hdl);
     uint64_t (*erase_with_key)(void *hdl,const char * key);
     void (*erase_with_index)(void *hdl,uint64_t index);
@@ -88,7 +88,7 @@ struct kautil_json_nlohmann_extern{
     void (*iterator_next)(void * itr);
     bool (*iterator_is)(void * itr,int8_t const& order );
     bool (*iterator_equal)(void * a,void * b);
-    void (*iterator_finalize)(void * itr);
+    void (*iterator_free)(void * itr);
     
 
     nlmj_node_hdl* (*node_iterator)(void * obj)=0;
