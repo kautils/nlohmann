@@ -1,5 +1,5 @@
 
-if(NOT DEFINED ${KAUTIL_THIRD_PARTY_DIR})
+if(NOT DEFINED KAUTIL_THIRD_PARTY_DIR)
     set(KAUTIL_THIRD_PARTY_DIR ${CMAKE_BINARY_DIR})
     file(MAKE_DIRECTORY "${KAUTIL_THIRD_PARTY_DIR}")
 endif()
@@ -17,7 +17,7 @@ git_clone(https://raw.githubusercontent.com/kautils/CMakeLibrarytemplate/v0.0.1/
 git_clone(https://raw.githubusercontent.com/kautils/CMakeFetchKautilModule/v0.0.1/CMakeFetchKautilModule.cmake)
 
 
-CMakeFetchKautilModule(sharedlib GIT https://github.com/kautils/sharedlib.git REMOTE origin TAG v0.0.1)
+CMakeFetchKautilModule(sharedlib GIT https://github.com/kautils/sharedlib.git REMOTE origin TAG v0.0.1 )
 find_package(KautilSharedlib.0.0.1.static REQUIRED)
 
 
@@ -53,7 +53,7 @@ CMakeLibraryTemplate(${module_name} EXPORT_LIB_TYPE static ${${module_name}_comm
 get_filename_component(output_file $<TARGET_FILE:${__json_definition_target}> NAME)
 target_compile_definitions(${${module_name}_static} INTERFACE KAUTIL_JSON_NLOHMANN_SO= $<INSTALL_INTERFACE:$<INSTALL_PREFIX>/lib/${__target_file_name}>)
 target_compile_definitions(${${module_name}_static} PRIVATE KAUTIL_JSON_NLOHMANN_SO="$<TARGET_FILE:kautil_json_nlohmann_definition_${PROJECT_VERSION}>")
-
+add_dependencies(${${module_name}_static} kautil_json_nlohmann_definition_${PROJECT_VERSION})
 
 set(__t ${${module_name}_static_tmain})
 add_executable(${__t})

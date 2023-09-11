@@ -36,7 +36,7 @@ void nlmj_erase_with_index(void *hdl,uint64_t index){
 }
 //void * nlmj_initialize(){ return new nlohmann::json; }
 void * nlmj_initialize(){ return new nlohmann::json{}; }
-void nlmj_finalize(void * hdl){
+void nlmj_free(void * hdl){
     delete reinterpret_cast<nlohmann::json*>(hdl);
 }
 
@@ -124,10 +124,10 @@ void nlmj_merge_files(void * hdl,char * outdir,char * name,int const& indent,cha
         nlmj_load_file(buf_hdl,arr_files[i]);
         if(nlmj_is(buf_hdl,NLMJ_T_NULL)) nlmj_load_string(buf_hdl,"{}",2);  /* if merge null, all is erased */
         nlmj_merge_patch(res_hdl,buf_hdl);
-        nlmj_finalize(buf_hdl);
+        nlmj_free(buf_hdl);
     }
     nlmj_dump_to_fs(res_hdl,outdir,name,indent);
-    nlmj_finalize(res_hdl);
+    nlmj_free(res_hdl);
 }
 
 
@@ -409,7 +409,7 @@ bool nlmj_iterator_equal(void * a,void * b){
     return *reinterpret_cast<iterator_t*>(a) == *reinterpret_cast<iterator_t*>(b);
 }
 
-void nlmj_iterator_finalize(void * itr){
+void nlmj_iterator_free(void * itr){
     delete reinterpret_cast<nlohmann::json::const_iterator*>(itr);
 }
 
@@ -483,9 +483,9 @@ extern "C" kautil_json_nlohmann_extern* extern_initialize(){
     assign(m,iterator_next);
     assign(m,iterator_is);
     assign(m,iterator_equal);
-    assign(m,iterator_finalize);
+    assign(m,iterator_free);
     assign(m,initialize);
-    assign(m,finalize);
+    assign(m,free);
     assign(m,clear);
     assign(m,erase_with_key);
     assign(m,erase_with_index);
