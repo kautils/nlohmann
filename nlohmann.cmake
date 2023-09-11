@@ -29,14 +29,13 @@ install(TARGETS ${__t} EXPORT ${__t} DESTINATION lib)
 
 
 set(module_name nlohmann)
-get_filename_component(__include_dir "${CMAKE_CURRENT_LIST_DIR}" DIRECTORY)
 unset(srcs)
 file(GLOB srcs ${CMAKE_CURRENT_LIST_DIR}/extern.cc)
 set(${module_name}_common_pref
     #DEBUG_VERBOSE
     MODULE_PREFIX kautil json
     MODULE_NAME ${module_name}
-    INCLUDES $<BUILD_INTERFACE:${__nlohamnn_dir}> $<BUILD_INTERFACE:${__include_dir}>  $<INSTALL_INTERFACE:include> 
+    INCLUDES $<BUILD_INTERFACE:${__nlohamnn_dir}> $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>  $<INSTALL_INTERFACE:include> ${CMAKE_CURRENT_LIST_DIR} 
     SOURCES ${srcs}
     LINK_LIBS kautil::sharedlib::0.0.1::static
     EXPORT_NAME_PREFIX ${PROJECT_NAME}
