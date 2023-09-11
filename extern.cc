@@ -40,7 +40,7 @@ void kautil_json_nlohmann_extern_free(kautil_json_nlohmann_extern *m){
 
 
 
-#include "sharedlib/sharedlib.h"
+#include "kautil/sharedlib/sharedlib.h"
 struct kAutoRelease{
     kautil_json_nlohmann_extern * instance=0; 
     kAutoRelease(){ instance=kautil_json_nlohmann_extern_initialize(kautil_dlopen,kautil_dlsym,kautil_dlclose,rtld_nodelete|rtld_lazy); }
